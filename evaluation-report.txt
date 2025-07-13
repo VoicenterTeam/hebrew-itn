@@ -1,0 +1,22 @@
+
+====== Hebrew ITN Model Evaluation Report ======
+
+Overall Performance:
+Total samples: 993
+Correct: 993
+Incorrect: 0
+Accuracy: 100.00%
+
+██████████████████████████████████████████████████
+
+Error Analysis:
+Number formatting issues: 0 (NaN%)
+Missing number conversions: 0 (NaN%)
+Wrong number values: 0 (NaN%)
+Text modification issues: 0 (NaN%)
+Other issues: 0 (NaN%)
+
+Sample Errors:
+Summary:
+Your Hebrew ITN model is currently achieving 100.00% accuracy on the test set.
+The model is performing very well! Consider testing with more challenging examples.

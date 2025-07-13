@@ -1,0 +1,40 @@
+{
+  "name": "hebrew-itn",
+  "version": "1.0.0",
+  "description": "Inverse Text Normalization for Hebrew - Converts spelled-out numbers to digits",
+  "main": "src/index.js",
+  "bin": {
+    "hebrew-itn": "src/cli.js"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:samples": "jest sample-data.test.js",
+    "test:unit": "jest index.test.js",
+    "evaluate": "node scripts/evaluate-model.js",
+    "lint": "eslint src test",
+    "start": "node src/cli.js",
+    "generate-data": "node data/generate-data.js > data/full-data.json",
+    "generate-samples": "node data/generate-data.js"
+  },
+  "keywords": [
+    "hebrew",
+    "nlp",
+    "text-normalization",
+    "numbers"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "eslint": "^8.40.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "prettier": "^2.8.8"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.1.3"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "hebrew-itn",
+  "version": "1.0.0",
+  "description": "Hebrew Inverse Text Normalization - Converts spelled-out Hebrew numbers to digits",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "benchmark": "node benchmark/pool-benchmark.js",
+    "example:basic": "node examples/basic-example.js",
+    "example:parallel": "node examples/parallel-example.js"
+  },
+  "keywords": [
+    "hebrew",
+    "text-normalization",
+    "ITN",
+    "numbers",
+    "NLP",
+    "language-processing",
+    "parallel-processing"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^29.0.0"
+  }
+}
