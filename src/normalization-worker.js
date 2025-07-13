@@ -26,16 +26,16 @@ try {
 parentPort.on('message', (task) => {
   try {
     // Process a batch of sentences by normalizing their text properties
-    const normalizedBatch = task.batch.map(item => {
-  // Apply normalization to the text property only
-  const normalizedText = normalizeText(item.text);
+    const normalizedBatch = task.batch.map((item) => {
+      // Apply normalization to the text property only
+      const normalizedText = normalizeText(item.text);
 
-  // Return a new object with the same properties but normalized text
-  return { ...item, text: normalizedText };
-});
+      // Return a new object with the same properties but normalized text
+      return { ...item, text: normalizedText };
+    });
 
-// Send the processed batch back to the main thread
-parentPort.postMessage(normalizedBatch);
+    // Send the processed batch back to the main thread
+    parentPort.postMessage(normalizedBatch);
   } catch (error) {
     // Send error back to main thread
     parentPort.postMessage({ error: error.message });

@@ -3,8 +3,6 @@
  */
 
 const { normalizeText, normalizeNumber } = require('../src/index');
-const fs = require('fs');
-const path = require('path');
 
 describe('Hebrew ITN - Number Normalization', () => {
   test('normalizes simple cardinal numbers', () => {
@@ -67,7 +65,7 @@ describe('Hebrew ITN - Text Normalization', () => {
   test('normalizes a text with multiple numbers', () => {
     expect(normalizeText('בכיתה יש עשרים וחמישה תלמידים ושני מורים'))
       .toBe('בכיתה יש 25 תלמידים ו2 מורים');
-    
+
     expect(normalizeText('קניתי שלושה תפוחים, ארבעה אגסים, וחמישה בננות'))
       .toBe('קניתי 3 תפוחים, 4 אגסים, ו5 בננות');
   });
@@ -75,7 +73,7 @@ describe('Hebrew ITN - Text Normalization', () => {
   test('handles conjunctions correctly', () => {
     expect(normalizeText('יש שלושה וחצי קילומטרים עד היעד'))
       .toBe('יש 3 וחצי קילומטרים עד היעד');
-    
+
     expect(normalizeText('הגיעו שלושים ושניים אנשים למסיבה'))
       .toBe('הגיעו 32 אנשים למסיבה');
   });
@@ -83,7 +81,7 @@ describe('Hebrew ITN - Text Normalization', () => {
   test('handles the רציף (platform) special case', () => {
     expect(normalizeText('הרכבת נמצאת ברציף שמונה'))
       .toBe('הרכבת נמצאת ברציף 8');
-    
+
     expect(normalizeText('חכה בבקשה ברציף חמש'))
       .toBe('חכה בבקשה ברציף 5');
   });
@@ -91,7 +89,7 @@ describe('Hebrew ITN - Text Normalization', () => {
   test('handles complex mixed cases', () => {
     const complex = 'יש חמש מאות אלף הורים וחמשת אלפיים שלוש מאות ושניים ילדים נמצאים ברציף שמונה';
     const expected = 'יש 500,000 הורים ו5,302 ילדים נמצאים ברציף 8';
-    
+
     expect(normalizeText(complex)).toBe(expected);
   });
 

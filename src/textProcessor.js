@@ -57,7 +57,7 @@ function detectNumberExpressions(text) {
           startIndex,
           endIndex,
           original: phrase,
-          normalized: allPatterns[phrase]
+          normalized: allPatterns[phrase],
         });
       }
     }
@@ -71,11 +71,9 @@ function detectNumberExpressions(text) {
     const current = results[i];
 
     // Check if this result overlaps with any we've already added
-    const overlaps = filteredResults.some(r =>
-      (current.startIndex >= r.startIndex && current.startIndex < r.endIndex) ||
-      (current.endIndex > r.startIndex && current.endIndex <= r.endIndex) ||
-      (current.startIndex <= r.startIndex && current.endIndex >= r.endIndex)
-    );
+    const overlaps = filteredResults.some((r) => (current.startIndex >= r.startIndex && current.startIndex < r.endIndex)
+      || (current.endIndex > r.startIndex && current.endIndex <= r.endIndex)
+      || (current.startIndex <= r.startIndex && current.endIndex >= r.endIndex));
 
     // Only add if it doesn't overlap
     if (!overlaps) {
@@ -94,25 +92,35 @@ function detectNumberExpressions(text) {
  */
 function handleSpecialCases(text) {
   // Handle platform numbers (רציף)
-  let processedText = text.replace(/(רציף|ברציף)\s+(שמונה|שבע|שש|חמש|ארבע|שלוש|שתיים|אחת|תשע|עשר)/g,
+  let processedText = text.replace(
+    /(רציף|ברציף)\s+(שמונה|שבע|שש|חמש|ארבע|שלוש|שתיים|אחת|תשע|עשר)/g,
     (match, prefix, number) => {
       const numMap = {
-        'אחת': '1', 'שתיים': '2', 'שלוש': '3', 'ארבע': '4', 'חמש': '5',
-        'שש': '6', 'שבע': '7', 'שמונה': '8', 'תשע': '9', 'עשר': '10'
+        אחת: '1',
+        שתיים: '2',
+        שלוש: '3',
+        ארבע: '4',
+        חמש: '5',
+        שש: '6',
+        שבע: '7',
+        שמונה: '8',
+        תשע: '9',
+        עשר: '10',
       };
       return `${prefix} ${numMap[number]}`;
-    }
+    },
   );
 
   // Handle common date formats
-  processedText = processedText.replace(/(בשנת)\s+(אלף תשע מאות \w+ ו\w+)/g,
+  processedText = processedText.replace(
+    /(בשנת)\s+(אלף תשע מאות \w+ ו\w+)/g,
     (match, prefix, year) => {
       const yearValue = numberPatterns.getDigitForHebrewNumber(year);
       if (yearValue) {
         return `${prefix} ${yearValue}`;
       }
       return match;
-    }
+    },
   );
 
   // Handle "וחצי" (and a half) expressions
@@ -154,7 +162,7 @@ function reconstruct(originalText, convertedExpressions) {
     if (expr.original === 'שמונה' && suffix.trim() === '') {
       const prevWord = prefix.trim().split(/\s+/).pop();
       if (prevWord === 'רציף' || prevWord === 'ברציף') {
-        result = prefix + '8' + suffix;
+        result = `${prefix}8${suffix}`;
         continue;
       }
     }
@@ -193,5 +201,5 @@ module.exports = {
   detectNumberExpressions,
   handleSpecialCases,
   reconstruct,
-  normalizeTextWithExpressions
+  normalizeTextWithExpressions,
 };

@@ -107,7 +107,7 @@ function parseNumberExpression(tokens) {
   }
 
   // Filter out conjunctions for complex processing
-  const numberTokens = tokens.filter(token => token !== 'ו' && token !== 'וה' && token !== 'ה');
+  const numberTokens = tokens.filter((token) => token !== 'ו' && token !== 'וה' && token !== 'ה');
 
   // Special cases for specific patterns
   const tokenStr = tokens.join(' ');
@@ -207,5 +207,5 @@ module.exports = {
   convertToDigits,
   parseNumberExpression,
   getWordValue,
-  formatNumberWithCommas
+  formatNumberWithCommas,
 };

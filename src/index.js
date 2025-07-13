@@ -29,7 +29,7 @@ try {
 
 // Create a lookup map for the sample data
 const sampleLookup = {};
-sampleData.samples.forEach(sample => {
+sampleData.samples.forEach((sample) => {
   sampleLookup[sample.original] = sample.normalized;
 });
 
@@ -40,7 +40,7 @@ try {
 } catch (e) {
   mockData = {
     numberTests: {},
-    textTests: {}
+    textTests: {},
   };
 }
 
@@ -82,20 +82,29 @@ function normalizeText(text) {
   if (normalizedText !== text) {
     // Fix periods at the end
     if (text.endsWith('.') && !normalizedText.endsWith('.')) {
-      return normalizedText + '.';
+      return `${normalizedText}.`;
     }
     return normalizedText;
   }
 
   // Handle platform numbers as a fallback
-  let processedText = text.replace(/(רציף|ברציף)\s+(שמונה|שבע|שש|חמש|ארבע|שלוש|שתיים|אחת|תשע|עשר)/g,
+  const processedText = text.replace(
+    /(רציף|ברציף)\s+(שמונה|שבע|שש|חמש|ארבע|שלוש|שתיים|אחת|תשע|עשר)/g,
     (match, prefix, number) => {
       const numMap = {
-        'אחת': '1', 'שתיים': '2', 'שלוש': '3', 'ארבע': '4', 'חמש': '5',
-        'שש': '6', 'שבע': '7', 'שמונה': '8', 'תשע': '9', 'עשר': '10'
+        אחת: '1',
+        שתיים: '2',
+        שלוש: '3',
+        ארבע: '4',
+        חמש: '5',
+        שש: '6',
+        שבע: '7',
+        שמונה: '8',
+        תשע: '9',
+        עשר: '10',
       };
       return `${prefix} ${numMap[number]}`;
-    }
+    },
   );
 
   return processedText;
@@ -156,12 +165,13 @@ function normalizeNumber(numberText) {
  * @returns {Promise<WorkerPool>} The initialized worker pool
  * @private
  */
+// eslint-disable-next-line no-underscore-dangle
 async function _ensureWorkerPool(numWorkers) {
   // Create the worker pool if it doesn't exist
   if (!globalWorkerPool) {
     // Create a worker script if it doesn't exist
-  const workerFilePath = path.join(__dirname, 'normalization-worker.js');
-  if (!fs.existsSync(workerFilePath)) {
+    const workerFilePath = path.join(__dirname, 'normalization-worker.js');
+    if (!fs.existsSync(workerFilePath)) {
       throw new Error('Worker script not found. Please ensure normalization-worker.js exists.');
     }
 
@@ -220,9 +230,9 @@ async function normalizeTranscriptParallel(transcriptSentences, options = {}) {
 
   // For small batches, just process synchronously
   if (transcriptSentences.length <= 5) {
-    return transcriptSentences.map(sentence => ({
+    return transcriptSentences.map((sentence) => ({
       ...sentence,
-      text: normalizeText(sentence.text)
+      text: normalizeText(sentence.text),
     }));
   }
 
@@ -233,25 +243,23 @@ async function normalizeTranscriptParallel(transcriptSentences, options = {}) {
     const workerPool = await _ensureWorkerPool(numWorkers);
 
     // Determine optimal batch size
-    const batchSize = options.batchSize ||
-      Math.max(10, Math.ceil(transcriptSentences.length / (numWorkers * 3)));
+    const batchSize = options.batchSize
+      || Math.max(10, Math.ceil(transcriptSentences.length / (numWorkers * 3)));
 
     // Clone input to avoid modifying the original and add index for order tracking
     const indexedSentences = transcriptSentences.map((sentence, index) => ({
       ...sentence,
-      __original_index: index
+      __original_index: index,
     }));
 
     // Split into batches
     const batches = [];
     for (let i = 0; i < indexedSentences.length; i += batchSize) {
       batches.push(indexedSentences.slice(i, i + batchSize));
-}
+    }
 
     // Process all batches through the worker pool
-    const batchPromises = batches.map(batch =>
-      workerPool.runTask({ batch })
-    );
+    const batchPromises = batches.map((batch) => workerPool.runTask({ batch }));
 
     // Wait for all batches to complete
     const batchResults = await Promise.all(batchPromises);
@@ -266,9 +274,9 @@ async function normalizeTranscriptParallel(transcriptSentences, options = {}) {
     console.error('Error in parallel normalization:', error);
 
     // Fallback to sequential processing if parallel processing fails
-    return transcriptSentences.map(sentence => ({
+    return transcriptSentences.map((sentence) => ({
       ...sentence,
-      text: normalizeText(sentence.text)
+      text: normalizeText(sentence.text),
     }));
   }
 }
@@ -277,5 +285,5 @@ module.exports = {
   normalizeText,
   normalizeNumber,
   normalizeTranscriptParallel,
-  shutdownWorkerPool
+  shutdownWorkerPool,
 };

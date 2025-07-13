@@ -22,15 +22,15 @@ function isNumberWord(token) {
   // Handle compound tokens with underscore (from preprocessing)
   if (token.includes('_')) {
     const parts = token.split('_');
-    return parts.every(part => isNumberWord(part));
+    return parts.every((part) => isNumberWord(part));
   }
 
-  return HEBREW_NUMBER_WORDS.cardinals.hasOwnProperty(token) ||
-         HEBREW_NUMBER_WORDS.tens.hasOwnProperty(token) ||
-         HEBREW_NUMBER_WORDS.hundreds.hasOwnProperty(token) ||
-         HEBREW_NUMBER_WORDS.thousands.hasOwnProperty(token) ||
-         HEBREW_NUMBER_WORDS.largeNumbers.hasOwnProperty(token) ||
-         CONSTRUCT_FORMS.hasOwnProperty(token);
+  return HEBREW_NUMBER_WORDS.cardinals.hasOwnProperty(token)
+         || HEBREW_NUMBER_WORDS.tens.hasOwnProperty(token)
+         || HEBREW_NUMBER_WORDS.hundreds.hasOwnProperty(token)
+         || HEBREW_NUMBER_WORDS.thousands.hasOwnProperty(token)
+         || HEBREW_NUMBER_WORDS.largeNumbers.hasOwnProperty(token)
+         || CONSTRUCT_FORMS.hasOwnProperty(token);
 }
 
 /**
@@ -78,7 +78,7 @@ function findNumberExpressions(tokens) {
   let currentExpression = null;
   let originalText = '';
   let startPosition = 0;
-  let position = 0;
+  const position = 0;
   let prevEnd = 0;
 
   // Expand compound tokens
@@ -97,14 +97,14 @@ function findNumberExpressions(tokens) {
       for (let j = 0; j < expanded.length; j++) {
         positionMap.push({
           start: tokenPos,
-          end: tokenPos + token.length
+          end: tokenPos + token.length,
         });
       }
     } else {
       expandedTokens.push(token);
       positionMap.push({
         start: tokenPos,
-        end: tokenPos + token.length
+        end: tokenPos + token.length,
       });
     }
 
@@ -121,8 +121,8 @@ function findNumberExpressions(tokens) {
   const finalizeExpression = () => {
     if (currentExpression && currentExpression.length > 0) {
       // Remove trailing conjunctions
-      while (currentExpression.length > 0 &&
-             isConjunction(currentExpression[currentExpression.length - 1])) {
+      while (currentExpression.length > 0
+             && isConjunction(currentExpression[currentExpression.length - 1])) {
         currentExpression.pop();
       }
 
@@ -151,13 +151,13 @@ function findNumberExpressions(tokens) {
         originalText = token;
       } else {
         currentExpression.push(token);
-        originalText += ' ' + token;
+        originalText += ` ${token}`;
       }
     }
     // Conjunctions can be part of number expressions
     else if (isConjunction(token) && currentExpression) {
       currentExpression.push(token);
-      originalText += ' ' + token;
+      originalText += ` ${token}`;
     }
     // Non-number word and not a conjunction - finalize the current expression
     else {

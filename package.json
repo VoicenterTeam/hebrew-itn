@@ -14,7 +14,7 @@
     "test:samples": "jest sample-data.test.js",
     "test:unit": "jest index.test.js",
     "evaluate": "node scripts/evaluate-model.js",
-    "lint": "eslint src test",
+    "lint": "eslint src test --fix",
     "start": "node src/cli.js",
     "generate-data": "node data/generate-data.js > data/full-data.json",
     "generate-samples": "node data/generate-data.js"
